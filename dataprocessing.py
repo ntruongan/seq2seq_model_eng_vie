@@ -80,10 +80,78 @@ for i, _ in enumerate(dict_vie):
     f.write(string)
 f.close()
 
+#%%
+def sequences_with_less_than(number_character: int):
+    # number_character
+    dictt = [] 
+    i = 0
+    dicttt = []
+    ep = 1
+    for ep in range (1,1001):
+        if ep < 10:
+            name = r"D:\IT\RESEARCH\large_project\EVB\N000%s.sgml" % ep
+        elif ep < 100:
+            name = r"D:\IT\RESEARCH\large_project\EVB\N00%s.sgml" % ep
+        elif ep < 1000:
+            name = r"D:\IT\RESEARCH\large_project\EVB\N0%s.sgml" % ep
+        elif ep == 1000:
+            name = r"D:\IT\RESEARCH\large_project\EVB\N1000.sgml"
+        
+        dictt = []
+        # dicttt = []
+        trash = 0
+        for line in open(name, encoding = "utf-8"):
+            if trash < 9:
+                trash += 1
+                continue
+            for i, char in enumerate(line):
+                if char == "<" and i < len(line):
+                    while line[i] != ">":
+                        line = line[1:]
+                    line = line[1:]
+                    if line != "\n":
+                        dictt.append(line)
+                    # print(line)
+    
+        for line in dictt:
+            for i, char in enumerate(line):
+                if char == "<" and i < len(line):
+                    while line[i] != ">":
+                        line = line[0:i]+line[i+1:]
+                    line = line[0:i]+line[i+1:]
+                    if line != "\n":
+                        dicttt.append(line)
+    if dicttt is not None:                   
+        eng_sequences = dicttt[0::2]
+        vie_sequences = dicttt[1::2]
+    # for i, seq_len in enumerate(eng_sequences):
+    #     if len(seq_len) > number_character:
+    #         eng_sequences = eng_sequences[0:i]+eng_sequences[i+1:]
+    #         vie_sequences = vie_sequences[0:i]+vie_sequences[i+1:]
+    # for i, seq_len in enumerate(vie_sequences):
+    #     if len(seq_len) > number_character:
+    #         eng_sequences = eng_sequences[0:i]+eng_sequences[i+1:]
+    #         vie_sequences = vie_sequences[0:i]+vie_sequences[i+1:]
+    tab_values = []
+    for i in range(0, len(eng_sequences)):
+        if len(eng_sequences[i]) < number_character and len(vie_sequences[i]) < number_character:
+            tab_values.append(eng_sequences[i][0:-1] + " \t " + vie_sequences[i])
+            
+    tab = open("vie_eng_sequences_%s_sorted_html.txt" % number_character,mode = "w+", encoding = "utf-8")
+    for li in tab_values:
+        tab.write(li)
+    vie = open("vie_sequences_%s_sorted_html.txt" % number_character,mode = "w+", encoding = "utf-8")
+    for viet in vie_sequences:
+        vie.write(viet)
+    eng = open("eng_sequences_%s_sorted_html.txt" % number_character,mode = "w+", encoding = "utf-8")
+    for engl in eng_sequences:
+        eng.write(engl)
+    vie.close()
+    eng.close()
+    return eng_sequences, vie_sequences
 
-
-#%% 
-dictt = []
+#%% html tab processing
+dictt = [] 
 i = 0
 dicttt = []
 ep = 1
@@ -133,24 +201,13 @@ eng.close()
 
 
 #%%
-            
-            
-    # i += 1
-    # linecor = line.split(">")
-    # # print("split >:")
-    # # print(linecor)
-    # linecor1 = [line.split("<") for line in linecor]
-    # # print("split <:")
-    # # print(linecor)
-    # if len(linecor1)>2:
-    #     some = []
-    #     some = linecor1 
-    #     dictt.append(some[1])
-        
-    
-    # # print(dictt)
-    # if i > 15:
-        # break
+input_count = []
+for line in open("vie_sequences_sorted_html.txt",mode = "r", encoding = "utf-8"):
+    input_count.append(len(line))
+   
+output_count = []
+for line in open("eng_sequences_sorted_html.txt",mode = "r", encoding = "utf-8"):
+    output_count.append(len(line))
     
 
  
